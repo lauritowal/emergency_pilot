@@ -7,11 +7,11 @@ from ray import tune
 from guidance_flight_env.aircraft import cessna172P
 from guidance_flight_env.examples.rllib.rllib_wrapper_env import RllibWrapperEnv
 
-from experiments.utils.custom_callbacks import CustomCallbacks
+from utils.custom_callbacks import CustomCallbacks
 
 SEED = 1
-CHECK_POINT_DIR = "~/experiments/checkpoints"
-JSBSIM_PATH = "~/jsbsim"
+CHECK_POINT_DIR = "./checkpoints"
+JSBSIM_PATH = "../jsbsim"
 ENVIRONMENT = "track-env-no-wind"
 
 def env_creator(config=None):
