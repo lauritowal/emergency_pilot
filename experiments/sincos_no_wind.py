@@ -5,7 +5,7 @@ import datetime
 from ray import tune
 
 from guidance_flight_env.aircraft import cessna172P
-from guidance_flight_env.examples.rllib.rllib_wrapper_env import RllibWrapperEnv
+from guidance_flight_env.environments.guidance_env_old import GuidanceEnvContinuos
 
 from utils.custom_callbacks import CustomCallbacks
 
@@ -16,7 +16,7 @@ ENVIRONMENT = "guidance-env-no-wind-v0"
 
 def env_creator(config=None):
     print("config", config)
-    return RllibWrapperEnv(config)
+    return GuidanceEnvContinuos(config)
 
 
 def train(config, reporter):
