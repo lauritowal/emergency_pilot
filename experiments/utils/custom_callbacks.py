@@ -4,7 +4,7 @@ import numpy as np
 
 from PIL import ImageDraw
 
-IMAGES_DIR = "~/images"
+IMAGES_DIR = "./images"
 episode_counter = 0
 
 

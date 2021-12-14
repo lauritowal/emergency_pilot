@@ -58,8 +58,6 @@ if __name__ == "__main__":
             "max_target_distance_km": 2,
             "max_episode_time_s": 60 * 5,
             "phase": 0,
-            "render_progress_image": False,
-            "render_progress_image_path": './data',
             "offset": 0,
             "seed": SEED,
             "evaluation": False,
