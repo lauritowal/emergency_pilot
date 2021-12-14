@@ -2,10 +2,13 @@
 `docker build --no-cache --tag laurito-sincos-no-wind .`
 
 # Run container
-`docker run laurito-sincos-no-wind`
+`docker run -d laurito-sincos-no-wind`
 
 # Delete image 
 `docker rmi laurito-sincos-no-wind`
+
+# Log ouput of container
+`docker logs -f <CONTAINER_ID>`
 
 # Other stuff
 ## List content of image without starting container
