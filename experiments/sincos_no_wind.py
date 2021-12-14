@@ -46,7 +46,7 @@ if __name__ == "__main__":
         "evaluation_interval": 20,
         "evaluation_num_episodes": 10,
         "num_gpus": 0,
-        "num_workers": 1,
+        "num_workers": 3,
         "num_envs_per_worker": 1,
         "seed": SEED,
         "env_config": {
