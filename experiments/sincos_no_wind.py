@@ -12,7 +12,7 @@ from utils.custom_callbacks import CustomCallbacks
 SEED = 1
 CHECK_POINT_DIR = "./checkpoints"
 JSBSIM_PATH = "../jsbsim"
-ENVIRONMENT = "track-env-no-wind"
+ENVIRONMENT = "guidance-env-no-wind-v0"
 
 def env_creator(config=None):
     print("config", config)
@@ -20,13 +20,13 @@ def env_creator(config=None):
 
 
 def train(config, reporter):
-    agent = TD3Trainer(config=config, env="track-env-no-wind")
+    agent = TD3Trainer(config=config, env=ENVIRONMENT)
 
     # Uncomment the following two lines and select checkpoint for restoring agent
     # checkpoint_path = f'{CHECK_POINT_DIR}/checkpoint_6001/checkpoint-6001'
     # agent.restore(checkpoint_path)
 
-    for i in range(5000):
+    for i in range(50000):
         agent.train()
         if i % 100 == 0:
             checkpoint = agent.save(checkpoint_dir=CHECK_POINT_DIR)
@@ -39,31 +39,35 @@ if __name__ == "__main__":
 
     default_config = td3.TD3_DEFAULT_CONFIG.copy()
     custom_config = {
-        "lr": 0.0001,
+        "lr": 0.0001, # tune.grid_search([0.01, 0.001, 0.0001]),
         "framework": "torch",
         "callbacks": CustomCallbacks,
         "log_level": "WARN",
         "evaluation_interval": 20,
         "evaluation_num_episodes": 10,
         "num_gpus": 0,
-        "num_workers": 3,
-        "num_envs_per_worker": 1,
+        "num_workers": 10,
+        "num_envs_per_worker": 2,
         "seed": SEED,
         "env_config": {
             "jsbsim_path": JSBSIM_PATH,
             "aircraft": cessna172P,
             "agent_interaction_freq": 5,
-            "target_radius_km": 100 / 1000,
-            "max_distance_km": 2,
+            "target_radius": 100 / 1000,
+            "max_distance_km": 4,
+            "max_target_distance_km": 2,
             "max_episode_time_s": 60 * 5,
             "phase": 0,
-            "seed_value": SEED,
-            "evaluation": False
+            "render_progress_image": False,
+            "render_progress_image_path": './data',
+            "offset": 0,
+            "seed": SEED,
+            "evaluation": False,
         },
         "evaluation_config": {
             "explore": False
         },
-        "evaluation_num_workers": 0,
+        "evaluation_num_workers": 1,
     }
 
     config = {**default_config, **custom_config}
