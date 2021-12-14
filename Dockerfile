@@ -2,13 +2,11 @@ FROM python:3.7
 
 RUN python3 -m pip install --upgrade pip
 
+RUN git clone https://github.com/JSBSim-Team/jsbsim.git
+
 RUN git clone https://github.com/lauritowal/guidance-flight-env
 WORKDIR ${CODE_DIR}/guidance-flight-env
 RUN pip3 install -e .
-
-RUN mkdir -p ${CODE_DIR}/jsbsim
-WORKDIR ${CODE_DIR}/jsbsim
-RUN git clone https://github.com/JSBSim-Team/jsbsim.git
 
 COPY ./experiments ${CODE_DIR}/experiments
 RUN mkdir -p ${CODE_DIR}/experiments/checkpoints
