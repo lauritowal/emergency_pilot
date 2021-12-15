@@ -12,5 +12,8 @@ COPY ./experiments ${CODE_DIR}/experiments
 RUN mkdir -p ${CODE_DIR}/experiments/checkpoints
 RUN mkdir -p ${CODE_DIR}/experiments/images
 
+RUN pip install tensorboard
+RUN pip install wandb
+
 WORKDIR ${CODE_DIR}/experiments
 CMD ["python3", "sincos_no_wind.py"]
