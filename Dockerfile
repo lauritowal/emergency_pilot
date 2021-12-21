@@ -1,5 +1,7 @@
 FROM python:3.7
 
+ENV CODE_DIR /root/code
+
 RUN python3 -m pip install --upgrade pip
 
 RUN git clone https://github.com/lauritowal/guidance-flight-env
