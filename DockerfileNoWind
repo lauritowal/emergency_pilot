@@ -18,4 +18,4 @@ RUN pip install tensorboard
 RUN pip install wandb
 
 WORKDIR ${CODE_DIR}/experiments
-# CMD ["python3", "sincos_no_wind.py"]
+CMD ["python3", "sincos_no_wind.py"]
