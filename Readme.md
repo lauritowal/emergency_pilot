@@ -1,5 +1,5 @@
 # Build image
-`docker build --no-cache --tag laurito-guidance .`
+`docker build --no-cache --tag laurito-guidance -f DockerfileWind .`
 
 # Run container
 `docker run -d -v ~/ray_results:/root/ray_results -p 9999:6006 laurito-guidance`
