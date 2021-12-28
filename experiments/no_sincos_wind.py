@@ -31,7 +31,7 @@ def my_train_fn(config, reporter):
     for i in range(5000):
         result = agent.train()
         if i % 100 == 0:
-            checkpoint = agent.save(checkpoint_dir=f"{checkpoint_dir}/checkpoints")
+            checkpoint = agent.save(checkpoint_dir=CHECK_POINT_DIR)
             print("checkpoint saved at", checkpoint)
     agent.stop()
 
