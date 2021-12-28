@@ -10,23 +10,23 @@ from gym_jsbsim.aircraft import Aircraft, cessna172P
 
 from gym_jsbsim.tests.CustomCallbacks import CustomCallbacks
 
-# checkpoint_dir = "/Volumes/USB_DRIVE/thesis_data"
-checkpoint_dir = os.path.dirname(os.path.realpath(__file__))
-
-
 def in_seconds(minutes: int) -> int:
     return minutes * 60
 
 SEED = 7
+CHECK_POINT_DIR = "./checkpoints"
+JSBSIM_PATH = "../jsbsim"
+ENVIRONMENT = "guidance-continuous-v0"
+
 def env_creator(config=None):
     print("config", config)
     return GuidanceEnvContinuos(config)
 
 current_episode = 0
 def my_train_fn(config, reporter):
-    agent = TD3Trainer(config=config, env="guidance-continuous-v0")
+    agent = TD3Trainer(config=config, env=ENVIRONMENT)
 
-    checkpoint_path = f'{checkpoint_dir}/checkpoints/checkpoint_6001/checkpoint-6001'
+    checkpoint_path = f'{CHECK_POINT_DIR}/checkpoint_6001/checkpoint-6001'
     # agent.restore(checkpoint_path)
 
     for i in range(5000):
@@ -54,8 +54,8 @@ if __name__ == "__main__":
         "num_envs_per_worker": 3,
         "seed": SEED,
         "env_config": {
-            "jsbsim_path": "/Users/walter/thesis_project/jsbsim",
-            "flightgear_path": "/Users/walter/FlightGear.app/Contents/MacOS/",
+            "jsbsim_path": JSBSIM_PATH,
+            "flightgear_path": "",
             "aircraft": cessna172P,
             "agent_interaction_freq": 5,
             "target_radius": 100 / 1000,
@@ -76,7 +76,7 @@ if __name__ == "__main__":
     }
 
     config = {**default_config, **custom_config}
-    register_env("guidance-continuous-v0", lambda config: env_creator(config))
+    register_env(ENVIRONMENT, lambda config: env_creator(config))
     resources = TD3Trainer.default_resource_request(config).to_json()
 
     # start training
