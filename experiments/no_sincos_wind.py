@@ -1,6 +1,5 @@
 from gym_jsbsim.environments.environment import GuidanceEnvContinuos
 import ray
-from gym_jsbsim.wrappers.normalise_observation import NormalizeObservation
 from ray.rllib.agents.ddpg import TD3Trainer, td3
 from ray.tune import register_env
 import datetime
@@ -8,7 +7,7 @@ import os
 from ray import tune
 from gym_jsbsim.aircraft import Aircraft, cessna172P
 
-from gym_jsbsim.tests.CustomCallbacks import CustomCallbacks
+from utils.custom_callbacks import CustomCallbacks
 
 def in_seconds(minutes: int) -> int:
     return minutes * 60
