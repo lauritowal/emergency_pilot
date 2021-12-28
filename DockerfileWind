@@ -24,5 +24,7 @@ RUN mkdir -p ${CODE_DIR}/experiments/images
 RUN pip install tensorboard
 RUN pip install wandb
 
+RUN mkdir -p ${CODE_DIR}/experiments/images
+
 WORKDIR ${CODE_DIR}/experiments
 CMD ["python3", "no_sincos_wind.py"]
