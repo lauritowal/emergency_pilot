@@ -27,7 +27,7 @@ def my_train_fn(config, reporter):
     agent = TD3Trainer(config=config, env="guidance-continuous-v0")
 
     checkpoint_path = f'{checkpoint_dir}/checkpoints/checkpoint_6001/checkpoint-6001'
-    agent.restore(checkpoint_path)
+    # agent.restore(checkpoint_path)
 
     for i in range(5000):
         result = agent.train()
