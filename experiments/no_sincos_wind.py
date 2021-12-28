@@ -88,7 +88,6 @@ if __name__ == "__main__":
              # resume=True,
              keep_checkpoints_num=5,
              # restore=f'{checkpoint_dir}/checkpoints/checkpoint_2101/checkpoint-2101',
-             local_dir="/Volumes/USB_DRIVE/thesis_data/ray",
-             name=f"experiment_full_circle_elevator_4_{now}_seed_{SEED}",
+             name=f"experiment_no_sincos_wind_4_{now}_seed_{SEED}",
              resources_per_trial=resources,
              config=config)
