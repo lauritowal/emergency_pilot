@@ -1,12 +1,11 @@
 from PIL import Image
 from ray.rllib.agents.callbacks import DefaultCallbacks
 import numpy as np
-
 from PIL import ImageDraw
 
 IMAGES_DIR = "./images"
 episode_counter = 0
-
+episode_counter_file = 0
 
 class CustomCallbacks(DefaultCallbacks):
     def on_train_result(self, *, trainer, result: dict, **kwargs):
@@ -31,6 +30,7 @@ class CustomCallbacks(DefaultCallbacks):
 
     def on_episode_end(self, worker, base_env, policies, episode, **kwargs):
         global episode_counter
+        global episode_counter_file
 
         print("Episode done:", episode_counter)
         envs = base_env.get_unwrapped()
@@ -45,22 +45,22 @@ class CustomCallbacks(DefaultCallbacks):
 
                 path = ""
                 if info["is_aircraft_out_of_bounds"]:
-                    path = f'{IMAGES_DIR}/episode_{episode_counter}_bounds'
+                    path = f'{IMAGES_DIR}/episode_{episode_counter_file}_bounds'
 
                 if info["is_aircraft_at_target"]:
                     if info["is_heading_correct"]:
-                        path = f'{IMAGES_DIR}/episode_{episode_counter}_heading'
+                        path = f'{IMAGES_DIR}/episode_{episode_counter_file}_heading'
                     else:
-                        path = f'{IMAGES_DIR}/episode_{episode_counter}_target'
+                        path = f'{IMAGES_DIR}/episode_{episode_counter_file}_target'
 
                 if info["is_on_track"]:
-                    path = f'{IMAGES_DIR}/episode_{episode_counter}_track'
+                    path = f'{IMAGES_DIR}/episode_{episode_counter_file}_track'
 
                 if not info["is_aircraft_at_target"] and not info["is_aircraft_out_of_bounds"]:
-                    path = f'{IMAGES_DIR}/episode_{episode_counter}_other'
+                    path = f'{IMAGES_DIR}/episode_{episode_counter_file}_other'
 
                 image.save(f'{path}.png')
-                # env.render_html(f'{path}.html')
+                env.render_html(f'{path}.html')
 
         #def on_postprocess_trajectory(self, worker, episode, agent_id, policy_id, policies, postprocessed_batch, original_batches, **kwargs):
         if "num_aircraft_out_of_bounds_metric" not in episode.custom_metrics:
@@ -100,6 +100,8 @@ class CustomCallbacks(DefaultCallbacks):
 
         episode.custom_metrics["num_distance_to_target_global"] = abs(info["distance_to_target"])
 
+        ### Count on at target only / on track
+
         if info["is_aircraft_at_target"]:
             episode.custom_metrics["num_aircraft_at_target_metric"] += 1
 
@@ -114,7 +116,7 @@ class CustomCallbacks(DefaultCallbacks):
             episode.custom_metrics["runway_angle_error"] = abs(info["runway_angle_error"])
             episode.custom_metrics["altitude_error"] = abs(info["altitude_error"])
             episode.custom_metrics["num_distance_to_target"] = abs(info["distance_to_target"])
-            episode.custom_metrics["num_gamma_deg"] = abs(info["gamma_deg"])
+            episode.custom_metrics["num_gamma_deg"] = abs(info["gamma_deg"]) # Gleitwinkel
 
             episode.custom_metrics["cross_track_error_at_end"] = abs(info["cross_track_error"])
             episode.custom_metrics["vertical_track_error_at_end"] = abs(info["vertical_track_error"])
@@ -123,3 +125,7 @@ class CustomCallbacks(DefaultCallbacks):
             episode.custom_metrics["num_aircraft_not_at_target_neither_out_of_bounds_metric"] += 1
 
         episode_counter += 1
+        episode_counter_file += 1
+
+        if episode_counter_file > 100:
+            episode_counter_file = 0
