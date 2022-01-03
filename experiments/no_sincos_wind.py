@@ -4,6 +4,7 @@ from ray.rllib.agents.ddpg import TD3Trainer, td3
 from ray.tune import register_env
 import datetime
 import os
+import sys
 from ray import tune
 from gym_jsbsim.aircraft import Aircraft, cessna172P
 
@@ -13,9 +14,12 @@ def in_seconds(minutes: int) -> int:
     return minutes * 60
 
 SEED = 7
-CHECK_POINT_DIR = "./checkpoints"
 JSBSIM_PATH = "../jsbsim"
 ENVIRONMENT = "guidance-continuous-v0"
+
+sys.path.append("../../..")
+checkpoint_dir = f'{os.path.dirname(os.path.realpath(__file__))}/checkpoints'
+
 
 def env_creator(config=None):
     print("config", config)
@@ -25,13 +29,13 @@ current_episode = 0
 def my_train_fn(config, reporter):
     agent = TD3Trainer(config=config, env=ENVIRONMENT)
 
-    checkpoint_path = f'{CHECK_POINT_DIR}/checkpoint_6001/checkpoint-6001'
+    checkpoint_path = f'{checkpoint_dir}/checkpoint_6001/checkpoint-6001'
     # agent.restore(checkpoint_path)
 
-    for i in range(5000):
+    for i in range(50000):
         result = agent.train()
         if i % 100 == 0:
-            checkpoint = agent.save(checkpoint_dir=CHECK_POINT_DIR)
+            checkpoint = agent.save(checkpoint_dir=checkpoint_dir)
             print("checkpoint saved at", checkpoint)
     agent.stop()
 

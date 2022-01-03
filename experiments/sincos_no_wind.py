@@ -3,16 +3,19 @@ from ray.rllib.agents.ddpg import TD3Trainer, td3
 from ray.tune import register_env
 import datetime
 from ray import tune
-
+import sys, os
 from guidance_flight_env.aircraft import cessna172P
 from guidance_flight_env.environments.guidance_env_old import GuidanceEnvContinuos
 
 from utils.custom_callbacks import CustomCallbacks
 
 SEED = 1
-CHECK_POINT_DIR = "./checkpoints"
 JSBSIM_PATH = "../jsbsim"
 ENVIRONMENT = "guidance-env-no-wind-v0"
+
+sys.path.append("../../..")
+checkpoint_dir = f'{os.path.dirname(os.path.realpath(__file__))}/checkpoints'
+
 
 def env_creator(config=None):
     print("config", config)
@@ -23,13 +26,13 @@ def train(config, reporter):
     agent = TD3Trainer(config=config, env=ENVIRONMENT)
 
     # Uncomment the following two lines and select checkpoint for restoring agent
-    # checkpoint_path = f'{CHECK_POINT_DIR}/checkpoint_6001/checkpoint-6001'
+    # checkpoint_path = f'{checkpoint_dir}/checkpoint_6001/checkpoint-6001'
     # agent.restore(checkpoint_path)
 
     for i in range(50000):
         agent.train()
         if i % 100 == 0:
-            checkpoint = agent.save(checkpoint_dir=CHECK_POINT_DIR)
+            checkpoint = agent.save(checkpoint_dir=checkpoint_dir)
             print("checkpoint saved at", checkpoint)
     agent.stop()
 
